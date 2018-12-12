@@ -1,15 +1,15 @@
 package lxpsee.top.web.utils;
 
-import lxpsee.top.common.AppBaseLog;
-import lxpsee.top.common.AppLogEntity;
-import lxpsee.top.common.AppStartupLog;
-import lxpsee.top.common.GeoInfo;
-import lxpsee.top.utils.GeoUtil;
+import com.alibaba.fastjson.JSONObject;
+import kafka.javaapi.producer.Producer;
+import kafka.producer.KeyedMessage;
+import kafka.producer.ProducerConfig;
+import lxpsee.top.common.*;
 import lxpsee.top.utils.PropertiesUtil;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * The world always makes way for the dreamer
@@ -20,13 +20,48 @@ public class ControllerUtil {
     private static Map<String, GeoInfo> cache = new HashMap<String, GeoInfo>();
 
     /**
+     * 发送信息到kafka
+     * 1.创建配置对象
+     * 2.创建生产者
+     * 3.逐个发送kafka消息
+     * 4.关闭 生产者
+     */
+    public static void sendMessage(AppLogEntity e) {
+        Properties props = new Properties();
+        props.put("metadata.broker.list", "ip202:9092");
+        props.put("serializer.class", "kafka.serializer.StringEncoder");
+        props.put("request.required.acks", "1");
+
+        Producer<Integer, String> producer = new Producer<Integer, String>(new ProducerConfig(props));
+
+        sendSingleLog(producer, e.getAppStartupLogs(), Constants.TOPIC_APP_START_UP);
+        sendSingleLog(producer, e.getAppErrorLogs(), Constants.TOPIC_APP_ERROR);
+        sendSingleLog(producer, e.getAppEventLogs(), Constants.TOPIC_APP_EVENT);
+
+        sendSingleLog(producer, e.getAppPageLogs(), Constants.TOPIC_APP_PAGE);
+        sendSingleLog(producer, e.getAppUsageLogs(), Constants.TOPIC_APP_USAGE);
+
+        producer.close();
+    }
+
+    private static void sendSingleLog(Producer<Integer, String> producer, AppBaseLog[] appBaseLogs, String topic) {
+        for (AppBaseLog appBaseLog : appBaseLogs) {
+            String logMsg = JSONObject.toJSONString(appBaseLog);
+            KeyedMessage<Integer, String> data = new KeyedMessage<Integer, String>(topic, logMsg);
+            producer.send(data);
+        }
+    }
+
+
+    /**
      * 处理ip client地址问题
      */
     public static void processClientIP(AppLogEntity e, String clientIP) {
         GeoInfo geoInfo = cache.get(clientIP);
 
         if (geoInfo == null) {
-            geoInfo = GeoUtil.getGeoInfo(clientIP);
+//            geoInfo = GeoUtil.getGeoInfo(clientIP);
+            geoInfo = new GeoInfo("中国", "浙江省");
             cache.put(clientIP, geoInfo);
         }
 

@@ -26,19 +26,24 @@ public class PropertiesUtil {
             PropertyDescriptor[] parr = biSrc.getPropertyDescriptors();
 
             for (PropertyDescriptor pd : parr) {
-                Method getter = pd.getReadMethod();
-                Method setter = pd.getWriteMethod();
-                String methodName = setter.getName();
-                Class<?>[] parameterTypes = setter.getParameterTypes();
-                Object value = getter.invoke(src);
+                try {
+                    Method getter = pd.getReadMethod();
+                    Method setter = pd.getWriteMethod();
+                    String methodName = setter.getName();
+                    Class<?>[] parameterTypes = setter.getParameterTypes();
+                    Object value = getter.invoke(src);
 
-                Method destSetter = dest.getClass().getMethod(methodName, parameterTypes);
-                destSetter.invoke(dest, value);
+                    Method destSetter = dest.getClass().getMethod(methodName, parameterTypes);
+                    destSetter.invoke(dest, value);
+                } catch (Exception e) {
+                    continue;
+                }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     public static void copyProperties(Object src, Object[] destArr) {
