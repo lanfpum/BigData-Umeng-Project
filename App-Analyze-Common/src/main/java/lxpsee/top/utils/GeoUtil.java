@@ -20,6 +20,9 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
  * <artifactId>maxmind-db</artifactId>
  * <version>1.0.0</version>
  * </dependency>
+ *
+ * ClassLoader.getSystemSystemAsStream("Geo.mmdb") ; 使用的是默认的jdk的类加载器
+ * 	web  模块使用的是tomcat的，会找不到，应该使用当前线程的类加载器
  */
 public class GeoUtil {
     private static InputStream inputStream;
@@ -27,7 +30,9 @@ public class GeoUtil {
 
     static {
         try {
-            inputStream = ClassLoader.getSystemResourceAsStream("GeoLite2-City.mmdb");
+//            inputStream = ClassLoader.getSystemResourceAsStream("GeoLite2-City.mmdb");
+            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+            inputStream = contextClassLoader.getResource("GeoLite2-City.mmdb").openStream();
             reader = new Reader(inputStream);
         } catch (IOException e) {
             e.printStackTrace();

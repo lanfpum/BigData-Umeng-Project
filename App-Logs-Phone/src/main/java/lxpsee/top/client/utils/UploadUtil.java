@@ -13,7 +13,8 @@ import java.net.URL;
 public class UploadUtil {
     public static void upload(String json) throws Exception {
         try {
-            URL url = new URL("http://localhost:9090/coll/index");
+//            URL url = new URL("http://localhost:9090/coll/index");
+            URL url = new URL("http://ip201:8080/app-web/coll/index");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("clientTime", System.currentTimeMillis() + "");

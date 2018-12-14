@@ -5,6 +5,7 @@ import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
 import lxpsee.top.common.*;
+import lxpsee.top.utils.GeoUtil;
 import lxpsee.top.utils.PropertiesUtil;
 
 import java.util.HashMap;
@@ -60,8 +61,8 @@ public class ControllerUtil {
         GeoInfo geoInfo = cache.get(clientIP);
 
         if (geoInfo == null) {
-//            geoInfo = GeoUtil.getGeoInfo(clientIP);
-            geoInfo = new GeoInfo("中国", "浙江省");
+            geoInfo = GeoUtil.getGeoInfo(clientIP);
+//            geoInfo = new GeoInfo("中国", "浙江省");
             cache.put(clientIP, geoInfo);
         }
 
