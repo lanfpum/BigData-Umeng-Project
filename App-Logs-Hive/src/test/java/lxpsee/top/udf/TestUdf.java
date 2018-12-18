@@ -15,7 +15,7 @@ public class TestUdf {
 
     @Test
     public void testUdf() {
-        Date zeroDate = DateUtil.getZeroDate(new Date());
+        Date zeroDate = DateUtil.getDayBeginTime(new Date());
         System.out.println(zeroDate.getTime());
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -34,7 +34,7 @@ public class TestUdf {
     @Test
     public void testStartTime() {
         Date d = new Date();
-        long ms = DateUtil.getZeroDate(d).getTime();
+        long ms = DateUtil.getDayBeginTime(d).getTime();
         System.out.println(ms);
     }
 
@@ -44,7 +44,7 @@ public class TestUdf {
     @Test
     public void testEndTime() {
         Date date = new Date();
-        Date zeroDate = DateUtil.getZeroDate(date);
+        Date zeroDate = DateUtil.getDayBeginTime(date);
         Calendar c = Calendar.getInstance();
         c.setTime(zeroDate);
         c.add(Calendar.DAY_OF_MONTH, 1);
@@ -56,7 +56,7 @@ public class TestUdf {
      */
     @Test
     public void testWeekStartTime() {
-        Date nowZeroDate = DateUtil.getNowZeroDate();
+        Date nowZeroDate = DateUtil.getNowDayBeginTime();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(nowZeroDate);
         int n = calendar.get(Calendar.DAY_OF_WEEK);
@@ -70,7 +70,7 @@ public class TestUdf {
     @Test
     public void testWeekEndTime() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(DateUtil.getNowZeroDate());
+        calendar.setTime(DateUtil.getNowDayBeginTime());
         int n = calendar.get(Calendar.DAY_OF_WEEK);
         calendar.add(Calendar.DAY_OF_MONTH, 8 - n);
         printInfo(calendar);
@@ -81,7 +81,7 @@ public class TestUdf {
      */
     @Test
     public void testMonthStartDate() {
-        Date date = DateUtil.getNowZeroDate();
+        Date date = DateUtil.getNowDayBeginTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-01 00:00:00");
         System.out.println(simpleDateFormat.format(date));
     }
@@ -91,7 +91,7 @@ public class TestUdf {
      */
     @Test
     public void testMonthEndDate() {
-        Date date = DateUtil.getNowZeroDate();
+        Date date = DateUtil.getNowDayBeginTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-01 00:00:00");
         Date date1 = null;
         try {
@@ -105,13 +105,38 @@ public class TestUdf {
         printInfo(calendar);
     }
 
+    @Test
+    public void testUtil() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        /*Date date = DateUtil.getDayBeginTime(new Date(), 3);
+        System.out.println(simpleDateFormat.format(date));*/
+
+       /* Date date = DateUtil.getWeekBeginTime(new Date());
+        System.out.println(simpleDateFormat.format(date));
+        Date weekBeginTime = DateUtil.getWeekBeginTime(new Date(), -2);
+        System.out.println(simpleDateFormat.format(weekBeginTime));*/
+
+        /*Date date = DateUtil.getMonthBeginTime(new Date());
+        System.out.println(simpleDateFormat.format(date));
+        Date date1 = DateUtil.getMonthBeginTime(new Date(),1);
+        System.out.println(simpleDateFormat.format(date1));*/
+    }
+
     public void printInfo(Calendar calendar) {
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println(DateUtil.getZeroDate(date).getTime());
+        System.out.println(DateUtil.getDayBeginTime(date).getTime());
         System.out.println(calendar.getTimeInMillis());
-        System.out.println(simpleDateFormat.format(DateUtil.getZeroDate(date)));
+        System.out.println(simpleDateFormat.format(DateUtil.getDayBeginTime(date)));
         System.out.println(simpleDateFormat.format(calendar.getTime()));
+    }
+
+    @Test
+    public void testDay() {
+        Date date = new Date();
+        date.setTime(1544625904265l);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+        System.out.println(simpleDateFormat.format(date));
     }
 
 }

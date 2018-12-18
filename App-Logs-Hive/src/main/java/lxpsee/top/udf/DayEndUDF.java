@@ -24,7 +24,7 @@ public class DayEndUDF extends UDF {
      * 计算指定日期的结束时刻(毫秒数)
      */
     public long evaluate(Date d) {
-        Date zeroDate = DateUtil.getZeroDate(d);
+        Date zeroDate = DateUtil.getDayBeginTime(d);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(zeroDate);
         calendar.add(Calendar.DAY_OF_MONTH, 1);
