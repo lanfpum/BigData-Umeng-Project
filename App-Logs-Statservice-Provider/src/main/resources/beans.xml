@@ -33,7 +33,7 @@
     <!-- 数据源 -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="org.apache.hive.jdbc.HiveDriver"/>
-        <property name="jdbcUrl" value="jdbc:hive2://ip201:10000/lp_applogs_db"/>
+        <property name="jdbcUrl" value="jdbc:hive2://ip202:10000/lp_applogs_db"/>
         <property name="user" value=""/>
         <property name="password" value=""/>
         <property name="maxPoolSize" value="10"/>
@@ -63,5 +63,5 @@
     <dubbo:protocol name="dubbo" port="20880"/>
 
     <!-- 声明需要暴露的服务接口 -->
-    <dubbo:service interface="lxpsee.top.applogs.service.StatService" ref="statService"/>
+    <dubbo:service interface="lxpsee.top.service.StatService" ref="statService"/>
 </beans>

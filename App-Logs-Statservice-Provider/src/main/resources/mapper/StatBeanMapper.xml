@@ -17,15 +17,30 @@
     <select id="selectAPPTodayNewUsers" resultType="long">
         select count(*) stcount
         from (
-            select deviceid , min(createdatms) mintime
-            from ext_startup_logs
-            where appid = #{appid}
-            group by deviceid
-            having mintime &gt;= getdaybegin() and mintime &lt; getdaybegin(1)
+        select deviceid , min(createdatms) mintime
+        from ext_startup_logs
+        where appid = #{appid}
+        group by deviceid
+        having mintime &gt;= getdaybegin() and mintime &lt; getdaybegin(1)
         ) t
     </select>
 
+    <!-- 查询一周内某个app每天新增用户数 -->
+    <select id="selectDayNewUsersOfThisWeek" resultMap="rm_StatBean">
+        select formattime(t.mintime,'yyyy/MM/dd') stdate,count(*) stcount
+        from (
+        select deviceid , min(createdatms) mintime
+        from ext_startup_logs
+        where appid = #{appid}
+        group by deviceid
+        having mintime &gt;= getweekbegin() and mintime &lt; getweekbegin(1)
+        ) t
+        group by formattime(t.mintime,'yyyy/MM/dd')
+    </select>
+
+
     <resultMap id="rm_StatBean" type="_StatBean">
         <result column="stcount" property="count"/>
+        <result column="stdate" property="date"/>
     </resultMap>
 </mapper>

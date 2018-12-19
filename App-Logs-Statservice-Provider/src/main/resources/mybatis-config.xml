@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias type="lxpsee.top.applogs.domain.StatBean" alias="_StatBean"></typeAlias>
+        <typeAlias type="lxpsee.top.domain.StatBean" alias="_StatBean"></typeAlias>
     </typeAliases>
     <mappers>
         <mapper resource="mapper/StatBeanMapper.xml"/>

@@ -307,7 +307,7 @@ public class TestGenData {
                     //将对象转换成json string
                     String json = JSONObject.toJSONString(logEntity);
                     UploadUtil.upload(json);
-                    Thread.sleep(20000);
+                    Thread.sleep(8000);
                 } catch (Exception ex) {
                     System.out.println(ex);
                 }

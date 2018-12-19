@@ -8,6 +8,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * The world always makes way for the dreamer
@@ -27,5 +28,9 @@ public class StatDao extends SqlSessionDaoSupport implements BaseDao<StatBean> {
     @Resource
     public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
         super.setSqlSessionFactory(sqlSessionFactory);
+    }
+
+    public List<StatBean> getDayNewUsersOfThisWeek(String appid) {
+        return getSqlSession().selectList("stats.selectDayNewUsersOfThisWeek", appid);
     }
 }

@@ -32,9 +32,18 @@
     <dubbo:application name="consumer_app"/>
 
     <dubbo:registry address="zookeeper://ip202:2181"/>
-    <dubbo:consumer timeout="50000"/>
+    <dubbo:consumer timeout="500000"/>
 
-    <dubbo:reference id="statService"
-                     interface="lxpsee.top.applogs.service.StatService"/>
+    <dubbo:reference id="statService" interface="lxpsee.top.service.StatService"/>
 
+    <!-- 此处乃进行json数据传输的关键,当配置 -->
+    <bean id="jsonMapping"
+          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonMapping"/>
+            </list>
+        </property>
+    </bean>
 </beans>

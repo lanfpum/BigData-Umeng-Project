@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en">
 <head>
@@ -24,9 +24,21 @@
             $("#accordion a").click(function () {
                 //重置所有连接的颜色
                 $("#accordion a").css("color", "#6a6a6a");
-                $(this).css("background-color", "#EAEAEA");
+                $(this).css("background-color", "#eaeaea");
                 $(this).css("color", "#3DA1A7");
             });
+
+            $("#a_newUsers").click(function () {
+                $.getJSON("/stat/weekNewUser", function (d) {
+                    option.xAxis.data = d.labels;
+                    option.series[0].data = d.data;
+                    myChart.setOption(option);
+                })
+
+                return false;
+            });
+
+
         });
     </script>
     <style type="text/css">
@@ -224,7 +236,7 @@
     </div>
     <h3>用户分析</h3>
     <div>
-        <a href='<c:url value="/stat/newusers" />'>新增用户</a>
+        <a id="a_newUsers" href='<c:url value="/stat/newusers" />'>新增用户</a>
         <a href="#">活跃用户</a>
         <a href="#">沉默用户</a>
         <a href="#">启动次数</a>
@@ -274,14 +286,6 @@
             name: 'v1.1',
             type: 'bar',
             data: [5, 20, 36, 10, 10, 20]
-        }, {
-            name: 'v1.2',
-            type: 'bar',
-            data: [6, 23, 38, 13, 15, 26]
-        }, {
-            name: 'v1.3',
-            type: 'bar',
-            data: [10, 35, 29, 21, 9, 33]
         }]
     };
 
